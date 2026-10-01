@@ -8,7 +8,6 @@ public class TesteControle {
 
     @GetMapping ("/teste")
     public String teste() {
-        return "Backend rodando na porta 8080";
+        return "Hello, world!";
     }
-    
 }
