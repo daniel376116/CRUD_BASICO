@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 
 @Entity 
 @Table (name = "aluno")
-public class AlunoModel {
+public class Aluno {
    
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class AlunoModel {
 
     private String nome, email;
 
-    public AlunoModel() {
+    public Aluno() {
 }
 
-    public AlunoModel(String nome, String email) {
+    public Aluno(String nome, String email) {
         this.nome = nome;
         this.email = email;
 }
