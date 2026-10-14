@@ -14,7 +14,7 @@ public class Aluno {
    
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank (message = "O nome do aluno é obrigatório")
     @Email (message = "Email Inválido")
