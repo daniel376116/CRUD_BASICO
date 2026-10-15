@@ -17,10 +17,10 @@ public class Aluno {
     private Integer id;
 
     @NotBlank (message = "O nome do aluno é obrigatório")
-    @Email (message = "Email Inválido")
     private String nome;
     
     @NotBlank (message = "O email do aluno é obrigatório")
+    @Email (message = "Email Inválido")
     private String email;
 
     public Aluno() {
