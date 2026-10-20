@@ -12,4 +12,7 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, Integer>
 
     List<Emprestimo> findByDataDevolucaoIsNull();
     
+    List<Emprestimo> findByAlunoId(Integer alunoId);
+
+    List<Emprestimo> findByLivroId(Integer livroId);
 }

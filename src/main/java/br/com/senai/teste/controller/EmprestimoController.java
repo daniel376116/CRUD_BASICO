@@ -1,5 +1,6 @@
 package br.com.senai.teste.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,20 +35,20 @@ public class EmprestimoController {
         Integer alunoId = dados.getAlunoId();
         Integer livroId = dados.getLivroId();
 
-        if (alunoId == null || livroId == null) {
+        LocalDate dataDevolucaoPrevista = dados.getDataDevolucaoPrevista();
+        if (alunoId == null || livroId == null || dataDevolucaoPrevista == null) {
             return ResponseEntity.badRequest().build();
         }
 
         Optional<Emprestimo> emprestimo = emprestimoService.cadastrar(
-            alunoId, livroId);
+            alunoId, livroId, dataDevolucaoPrevista);
 
         if(emprestimo.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(emprestimo.get());
+        .status(HttpStatus.CREATED).body(emprestimo.get());
     }
 
     @GetMapping
@@ -77,6 +78,20 @@ public class EmprestimoController {
     @GetMapping("/ativos")
     public ResponseEntity<List<Emprestimo>> listarAtivos() {
         List<Emprestimo> emprestimos = emprestimoService.listarAtivos();
+
+        return ResponseEntity.ok(emprestimos);
+    }
+
+    @GetMapping("/aluno/{alunoId}")
+    public ResponseEntity<List<Emprestimo>> listarPorAluno(@PathVariable Integer alunoId) {
+        List<Emprestimo> emprestimos = emprestimoService.listarPorAluno(alunoId);
+
+        return ResponseEntity.ok(emprestimos);
+    }
+
+    @GetMapping ("/livro/{livroId}")
+    public ResponseEntity<List<Emprestimo>> listarPorLivro(@PathVariable Integer livroId) {
+        List<Emprestimo> emprestimos = emprestimoService.listarPorLivro(livroId);
 
         return ResponseEntity.ok(emprestimos);
     }
