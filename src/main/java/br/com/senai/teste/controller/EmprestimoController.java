@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.senai.teste.dto.EmprestimoRequest;
 import br.com.senai.teste.model.Emprestimo;
 import br.com.senai.teste.service.EmprestimoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping ("/emprestimos")
@@ -30,7 +31,7 @@ public class EmprestimoController {
 
     @PostMapping 
     public ResponseEntity<Emprestimo> cadastrar(
-        @RequestBody EmprestimoRequest dados
+        @Valid @RequestBody EmprestimoRequest dados
     ) {
         Integer alunoId = dados.getAlunoId();
         Integer livroId = dados.getLivroId();
@@ -93,6 +94,12 @@ public class EmprestimoController {
     public ResponseEntity<List<Emprestimo>> listarPorLivro(@PathVariable Integer livroId) {
         List<Emprestimo> emprestimos = emprestimoService.listarPorLivro(livroId);
 
+        return ResponseEntity.ok(emprestimos);
+    }
+
+    @GetMapping("/atrasados")
+    public ResponseEntity<List<Emprestimo>> listarAtrasados() {
+        List<Emprestimo> emprestimos = emprestimoService.listarAtrasados();
         return ResponseEntity.ok(emprestimos);
     }
 }
