@@ -16,7 +16,7 @@ import br.com.senai.teste.repository.AlunoRepository;
 import br.com.senai.teste.repository.EmprestimoRepository;
 import br.com.senai.teste.repository.LivroRepository;
 
-@Service 
+@Service
 public class EmprestimoService {
     private final EmprestimoRepository emprestimoRepository;
     private final AlunoRepository alunoRepository;
@@ -90,5 +90,43 @@ public class EmprestimoService {
 
     public List<Emprestimo> listarAtrasados() {
         return emprestimoRepository.findByDataDevolucaoPrevistaBeforeAndDataDevolucaoIsNull(LocalDate.now());
+        
     }
+
+    public List<Emprestimo> listarAtrasadosPorAluno(Integer alunoId) {
+        return emprestimoRepository.findByAlunoIdAndDataDevolucaoPrevistaBeforeAndDataDevolucaoIsNull(
+            alunoId, LocalDate.now());
+    }
+
+    public Optional<Emprestimo> renovar(
+        Integer id,
+        LocalDate novaDataPrevista) {
+
+    Optional<Emprestimo> emprestimoOptional = emprestimoRepository.findById(id);
+
+    if (emprestimoOptional.isEmpty()) {
+        return Optional.empty();
+    }
+
+    Emprestimo emprestimo = emprestimoOptional.get();
+
+    if (emprestimo.getDataDevolucao() != null) {
+        throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Um empréstimo devolvido não pode ser renovado");
+    }
+
+    if (novaDataPrevista.isBefore(LocalDate.now())) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "A nova data de devolução prevista deve ser no futuro");
+    }
+
+    emprestimo.setDataDevolucaoPrevista(
+            novaDataPrevista);
+
+    return Optional.of(
+            emprestimoRepository.save(emprestimo));
+}
+
 }

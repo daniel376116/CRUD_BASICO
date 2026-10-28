@@ -78,5 +78,24 @@ public class Emprestimo {
   public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista) {
     this.dataDevolucaoPrevista = dataDevolucaoPrevista;
   }
+
+  public String getSituacao() {
+
+    if (dataDevolucao != null) {
+        return "DEVOLVIDO";
+    }
+
+    if (dataDevolucaoPrevista == null) {
+        return "SEM_PREVISAO";
+    }
+
+    if (dataDevolucaoPrevista.isBefore(
+            LocalDate.now())) {
+
+        return "ATRASADO";
+    }
+
+    return "ATIVO";
+}
     
 }

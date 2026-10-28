@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.senai.teste.model.Emprestimo;
 
+import java.time.LocalDate;
+
 public interface EmprestimoRepository extends JpaRepository<Emprestimo, Integer> {
 
     boolean existsByLivroIdAndDataDevolucaoIsNull(Integer livroId);
@@ -17,4 +19,6 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, Integer>
     List<Emprestimo> findByLivroId(Integer livroId);
 
     List<Emprestimo> findByDataDevolucaoPrevistaBeforeAndDataDevolucaoIsNull(LocalDate dataAtual);
+
+    List<Emprestimo> findByAlunoIdAndDataDevolucaoPrevistaBeforeAndDataDevolucaoIsNull(Integer alunoId, LocalDate dataAtual);
 }
